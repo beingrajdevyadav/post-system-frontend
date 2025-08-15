@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./AuthForm.module.css";
+import styles from "../css/auth.css";
 
 export default function Register({ onSwitch }) {
   const [form, setForm] = useState({
