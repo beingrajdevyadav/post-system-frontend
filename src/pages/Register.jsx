@@ -6,7 +6,7 @@ export default function Register({ onSwitch }) {
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+   
   });
 
   const handleChange = (e) => {
@@ -46,14 +46,7 @@ export default function Register({ onSwitch }) {
           onChange={handleChange}
           required
         />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          required
-        />
+     
         <button type="submit" className={styles.btn}>Register</button>
         <p className={styles.switchText}>
           Already have an account?{" "}
