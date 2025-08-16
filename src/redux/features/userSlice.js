@@ -4,9 +4,9 @@ import { api } from "../../api";
 
 
 // to handle login
-export const loginUser = createAsyncThunk("user/login", async({email, password}, {rejectWithValue})=>{
+export const loginUser = createAsyncThunk("user/login", async ({ email, password }, { rejectWithValue }) => {
     try {
-        const {data} = await api.post("/auth/login", {email, password});
+        const { data } = await api.post("/auth/login", { email, password });
 
         // save token and user in localStorage
         localStorage.setItem("token", data.token);
@@ -19,14 +19,25 @@ export const loginUser = createAsyncThunk("user/login", async({email, password},
 
 
 // to handle register
-export const registerUser = createAsyncThunk("auth/register", async(payload)=>{
-    const {data} = await api.post("/register", payload);
-    return data;
+export const registerUser = createAsyncThunk("auth/register", async (formData, { rejectWithValue }) => {
+    try {
+        const { data } = await api.post("/register", formData);
+
+        // save token and user in localstorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data));
+
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || "Register Failed");
+    }
 });
+
+
 
 const userSlice = createSlice({
     name: "user",
-    initialState:{
+    initialState: {
 
     },
 });
