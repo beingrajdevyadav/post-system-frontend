@@ -35,18 +35,55 @@ export const registerUser = createAsyncThunk("user/register", async (formData, {
 
 
 const initialState = {
-    user: localStorage.getItem("user")?JSON.parse(localStorage.getItem('user')) || null,
+    user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem('user')) : null,
     token: localStorage.getItem("token") || null,
     loading: false,
     error: null,
-},
+};
 
 
 const userSlice = createSlice({
     name: "user",
-    initialState: {
-
+    initialState,
+    reducers: {
+        logout: (state) => {
+            state.user = null;
+            state.token = null;
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+        },
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(loginUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload;
+                state.token = action.payload.token;
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(registerUser.pending, (state)=>{
+                state.loading = true;
+                state.error =null;
+            })
+            .addCase(registerUser.fulfilled, (state, action)=>{
+                state.loading =false;
+                state.user = action.payload;
+                state.token = action.payload.token;
+            })
+            .addCase(registerUser.rejected, (state, action)=>{
+                state.loading = false;
+                state.error = action.payload;
+            });
+
+    }
 });
 
+export const {logout} = userSlice.actions;
 export default userSlice.reducer;
