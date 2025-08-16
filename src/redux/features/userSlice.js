@@ -19,9 +19,9 @@ export const loginUser = createAsyncThunk("user/login", async ({ email, password
 
 
 // to handle register
-export const registerUser = createAsyncThunk("auth/register", async (formData, { rejectWithValue }) => {
+export const registerUser = createAsyncThunk("user/register", async (formData, { rejectWithValue }) => {
     try {
-        const { data } = await api.post("/register", formData);
+        const { data } = await api.post("auth/register", formData);
 
         // save token and user in localstorage
         localStorage.setItem("token", data.token);
@@ -33,6 +33,13 @@ export const registerUser = createAsyncThunk("auth/register", async (formData, {
     }
 });
 
+
+const initialState = {
+    user: localStorage.getItem("user")?JSON.parse(localStorage.getItem('user')) || null,
+    token: localStorage.getItem("token") || null,
+    loading: false,
+    error: null,
+},
 
 
 const userSlice = createSlice({
