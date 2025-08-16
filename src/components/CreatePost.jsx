@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import 'react-quill-new/dist/quill.snow.css';
 
 import "../css/editor.css"
+import { createPost } from '../redux/features/postSlice';
 
 const CreatePost = () => {
     const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const CreatePost = () => {
         fd.append("articleHtml", articleHtml);
 
         if(fileRef.current?.files?.[0]) fd.append("media", fileRef.current.files[0]);
-        dispatch(CreatePost(fd));
+        dispatch(createPost(fd));
 
         setArticleHtml('');
         setText('');
@@ -56,6 +57,12 @@ const CreatePost = () => {
                 <textarea value={text} onChange={(e)=>setText(e.target.value)} rows={4} placeholder="What's on your mind?"></textarea>
             )
         }
+
+         {(mode === "image" || mode === "video") && (
+        <input ref={fileRef} type="file" accept={mode === "image" ? "image/*" : "video/*"} />
+      )}
+
+      <button type='submit'>Submit</button>
     </form>
   )
 }
